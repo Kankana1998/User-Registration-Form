@@ -5,12 +5,14 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useDispatch } from 'react-redux';
+import { updateFormData } from "../redux/FormDataSlice";
+import DataTable from "datatables.net-dt";
 
 
 const schema2 = yup.object().shape({
   country: yup.string().required(),
-  pincode: yup.number().positive().integer().min(6, 'pincode must be at least 6 characters')
-  .max(6, 'Pincode cannot exceed 6 characters').required(),
+  pincode: yup.number().positive().integer().required(),
 });
 
  
@@ -26,6 +28,8 @@ function AddressDetail() {
   const [geo, setGeo] = useState([]);
   const [selectedState, setSelectedState] = useState("");
   const [cityy, setCityy] = useState([]);
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({ address: '', state: '', city: '', pincode: '' });
 
   const {
     register,
@@ -59,8 +63,10 @@ function AddressDetail() {
     setCityy(data);
   };
 
-  const onSubmit = (data) => {
-    console.log(data); // Call the onNext function to move to the next page
+  const onSubmit = () => {
+   
+   dispatch(updateFormData(formData));
+   <DataTable />
   };
 
   return (
@@ -76,6 +82,7 @@ function AddressDetail() {
             id="outlined-basic"
             variant="outlined"
             placeholder="Enter Name"
+            name="address"
           />
         </FormControl>
         <FormControl>
@@ -86,12 +93,14 @@ function AddressDetail() {
             sx={{ width: 30 + "vw" }}
             renderInput={(params) => <TextField {...params} />}
             onChange={handleStateChange}
+             name="state"
           />
         </FormControl>
         <FormControl>
           <label>City</label>
           <Autocomplete
             id="combo-box-city"
+            name="city"
             options={cityy.map((list) => list.name)}
             sx={{ width: 30 + "vw" }}
             renderInput={(params) => <TextField {...params} />}

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
+import { useSelector } from 'react-redux';
 
-export default function DataTableComponent({ data }) {
-  const [tableData, setTableData] = useState([]);
-
-  useEffect(() => {
-    setTableData(data);
-  }, [data]);
+export default function DataTableComponent() {
+  
+  const formData = useSelector((state) => state.formData);
+ 
 
   const columns = [
     {
@@ -76,7 +75,14 @@ export default function DataTableComponent({ data }) {
       <DataTable
         title="Data Table"
         columns={columns}
-        data={tableData}
+        data={formData.map((data, index) => (
+        <tr key={index}>
+              <td>{data.name}</td>
+              <td>{data.age}</td>
+              <td>{data.gender}</td>
+              <td>{data.mobile}</td>
+            </tr>
+            ))}
         pagination
         highlightOnHover
         striped

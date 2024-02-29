@@ -5,6 +5,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useDispatch } from 'react-redux';
+
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -29,7 +31,7 @@ export default function PersonalDetails({ onNext }) {
   const genderOptions = [{ label: "Male" }, { label: "Female" }, { label: "Other" }];
 
   const idTypeOptions = [{ label: "Aadhar" }, { label: "PAN" }];
-
+    const dispatch = useDispatch();
   const onSubmit = (data) => {
     onNext(); // Call the onNext function to move to the next page
   };
